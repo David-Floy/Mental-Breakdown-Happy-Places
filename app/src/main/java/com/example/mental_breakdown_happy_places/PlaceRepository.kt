@@ -2,37 +2,25 @@ package com.example.mental_breakdown_happy_places
 
 import android.content.Context
 import androidx.room.Room
+import kotlinx.coroutines.flow.Flow
 
-class PlaceRepository private constructor(context: Context) {
-    private val placeDao: PlaceDao
+class PlaceRepository (private val placeDao: PlaceDao) {
 
-    init {
-        val database = Room.databaseBuilder(
-            context.applicationContext,
-            AppDatabase::class.java,
-            "places_db"
-        )
-            .allowMainThreadQueries() // Verwende nicht auf dem Hauptthread in Produktion
-            .build()
-        placeDao = database.placeDao()
-    }
 
-    companion object {
-        @Volatile
-        private var instance: PlaceRepository? = null
 
-        fun getInstance(context: Context): PlaceRepository {
-            return instance ?: synchronized(this) {
-                instance ?: PlaceRepository(context).also { instance = it }
-            }
-        }
-    }
 
-    fun insert(place: Place) {
+
+
+    suspend fun insert(id: Int, name:String,description: String,latitude: Double, longitude: Double) {
+        val place = Place( id = id,name = name, description = description, latitude = latitude, longitude = longitude)
         placeDao.insert(place)
+        println("New place inserted: $place.name")
     }
 
     fun getAllPlaces(): List<Place> {
         return placeDao.getAllPlaces()
+    }
+    fun getTextById(id: Int): Flow<Place?> {
+        return placeDao.getTextById(id)
     }
 }

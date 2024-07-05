@@ -4,18 +4,24 @@ import android.os.Bundle
 import android.text.Editable
 import android.text.TextWatcher
 import android.view.View
+import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
+import androidx.lifecycle.lifecycleScope
 import com.example.mental_breakdown_happy_places.databinding.DialogAddPlaceBinding
+import kotlinx.coroutines.launch
 
 
 class AddPlaceDialog : AppCompatActivity() {
     private var binding: DialogAddPlaceBinding? = null
 
-    interface OnPlaceAddedListener {
-        fun onPlaceAdded(place: Place)
+
+
+    private val placeViewModel : PlaceViewModel by viewModels{
+        PlaceViewModelFactory((application as PlaceApplication).repository)
     }
 
-    private var listener: OnPlaceAddedListener? = null
+
+
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -41,8 +47,10 @@ class AddPlaceDialog : AppCompatActivity() {
             val description = binding?.editPlaceDescription?.text.toString()
             val latitude = binding?.editPlaceLatitude?.text.toString().toDoubleOrNull() ?: 0.0
             val longitude = binding?.editPlaceLongitude?.text.toString().toDoubleOrNull() ?: 0.0
-            val place = Place(0, name, description, latitude, longitude)
-            listener?.onPlaceAdded(place)
+            //val place = Place( 0,name, description, latitude, longitude)
+            lifecycleScope.launch {
+                placeViewModel.insertPlace(0,name,description,latitude,longitude)
+            }
             finish()
         }
     }
