@@ -22,6 +22,12 @@ class MainActivity : AppCompatActivity() {
             val intent = Intent(this, AddPlaceDialog::class.java)
             startActivity(intent)
         }
+        binding?.showDB?.setOnClickListener{
+
+            // intent erzeugen, um zur AddPlaceDialog Activity zu wechseln
+            val intent = Intent(this, PlaceList::class.java)
+            startActivity(intent)
+        }
 
 
 

@@ -1,5 +1,6 @@
 package com.example.mental_breakdown_happy_places.db
 
+import androidx.lifecycle.LiveData
 import androidx.room.Dao
 import androidx.room.Delete
 import androidx.room.Insert
@@ -13,10 +14,15 @@ interface PlaceDao {
     suspend fun insert(place: Place) : Long
 
     @Query("SELECT * FROM places")
-    fun getAllPlaces(): List<Place>
+    fun getAllPlaces(): LiveData<List<Place>>
 
     @Delete
     fun delete(place: Place)
-    @Query("SELECT * FROM places WHERE id = :id")
-    fun getTextById(id: Int): Flow<Place?>
+
+
+    @Query("SELECT name FROM places WHERE id = :id")
+    fun getTextById(id: Int): String
+
+    @Query("SELECT COUNT(*) FROM places")
+    fun getCount() : Int
 }

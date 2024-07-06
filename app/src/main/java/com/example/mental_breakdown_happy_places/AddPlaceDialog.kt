@@ -6,6 +6,7 @@ import android.text.TextWatcher
 import android.view.View
 import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
+import androidx.fragment.app.Fragment
 import androidx.lifecycle.lifecycleScope
 import com.example.mental_breakdown_happy_places.databinding.ActivityAddPlaceBinding
 import com.example.mental_breakdown_happy_places.db.PlaceApplication
@@ -19,7 +20,7 @@ class AddPlaceDialog : AppCompatActivity() {
 
 
 
-    private val placeViewModel : PlaceViewModel by viewModels{
+    val placeViewModel : PlaceViewModel by viewModels{
         PlaceViewModelFactory((application as PlaceApplication).repository)
     }
 
