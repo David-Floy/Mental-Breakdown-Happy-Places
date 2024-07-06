@@ -1,7 +1,5 @@
-package com.example.mental_breakdown_happy_places
+package com.example.mental_breakdown_happy_places.db
 
-import android.content.Context
-import androidx.room.Room
 import kotlinx.coroutines.flow.Flow
 
 class PlaceRepository (private val placeDao: PlaceDao) {

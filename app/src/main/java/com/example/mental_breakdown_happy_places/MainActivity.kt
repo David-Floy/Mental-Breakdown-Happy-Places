@@ -18,7 +18,7 @@ class MainActivity : AppCompatActivity() {
 
         binding?.testadd?.setOnClickListener{
 
-            // intent erzeugen, um zur Excercise Activity zu wechseln
+            // intent erzeugen, um zur AddPlaceDialog Activity zu wechseln
             val intent = Intent(this, AddPlaceDialog::class.java)
             startActivity(intent)
         }

@@ -7,12 +7,15 @@ import android.view.View
 import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
 import androidx.lifecycle.lifecycleScope
-import com.example.mental_breakdown_happy_places.databinding.DialogAddPlaceBinding
+import com.example.mental_breakdown_happy_places.databinding.ActivityAddPlaceBinding
+import com.example.mental_breakdown_happy_places.db.PlaceApplication
+import com.example.mental_breakdown_happy_places.db.PlaceViewModel
+import com.example.mental_breakdown_happy_places.db.PlaceViewModelFactory
 import kotlinx.coroutines.launch
 
 
 class AddPlaceDialog : AppCompatActivity() {
-    private var binding: DialogAddPlaceBinding? = null
+    private var binding: ActivityAddPlaceBinding? = null
 
 
 
@@ -21,16 +24,21 @@ class AddPlaceDialog : AppCompatActivity() {
     }
 
 
-
+    // Place attributes
+    var name = ""
+    var description = ""
+    var latitude : Double = 0.0
+    var longitude :Double = 0.0
 
     override fun onCreate(savedInstanceState: Bundle?) {
+
         super.onCreate(savedInstanceState)
-        binding = DialogAddPlaceBinding.inflate(layoutInflater)
+        binding = ActivityAddPlaceBinding.inflate(layoutInflater)
         setContentView(binding?.root)
 
         // Initial visibility of buttons
         binding?.buttonAdd?.visibility = View.GONE
-        binding?.buttonCancel?.visibility = View.GONE
+
 
         // TextWatchers for EditTexts
         binding?.editPlaceName?.addTextChangedListener(textWatcher)
@@ -38,16 +46,27 @@ class AddPlaceDialog : AppCompatActivity() {
         binding?.editPlaceLatitude?.addTextChangedListener(textWatcher)
         binding?.editPlaceLongitude?.addTextChangedListener(textWatcher)
 
+
         binding?.buttonCancel?.setOnClickListener {
             finish()
         }
 
+
+        // Inputs
         binding?.buttonAdd?.setOnClickListener {
-            val name = binding?.editPlaceName?.text.toString()
-            val description = binding?.editPlaceDescription?.text.toString()
-            val latitude = binding?.editPlaceLatitude?.text.toString().toDoubleOrNull() ?: 0.0
-            val longitude = binding?.editPlaceLongitude?.text.toString().toDoubleOrNull() ?: 0.0
-            //val place = Place( 0,name, description, latitude, longitude)
+            // Name of the place
+            name = binding?.editPlaceName?.text.toString()
+            // Description of the place
+            description = binding?.editPlaceDescription?.text.toString()
+
+
+            // latitude of the place
+            latitude = binding?.editPlaceLatitude?.text.toString().toDoubleOrNull() ?: 0.0
+            // longitude of place
+            longitude = binding?.editPlaceLongitude?.text.toString().toDoubleOrNull() ?: 0.0
+
+
+            // Adds new place to DB. Id should be assigned automatically.
             lifecycleScope.launch {
                 placeViewModel.insertPlace(0,name,description,latitude,longitude)
             }
@@ -55,6 +74,7 @@ class AddPlaceDialog : AppCompatActivity() {
         }
     }
 
+    // TextWatcher is for checking if an fextfield got edited
     private val textWatcher = object : TextWatcher {
         override fun beforeTextChanged(s: CharSequence?, start: Int, count: Int, after: Int) {}
 
@@ -66,13 +86,20 @@ class AddPlaceDialog : AppCompatActivity() {
 
             if (name.isNotEmpty() || description.isNotEmpty() || latitude.isNotEmpty() || longitude.isNotEmpty()) {
                 binding?.buttonAdd?.visibility = View.VISIBLE
-                binding?.buttonCancel?.visibility = View.VISIBLE
+
             } else {
                 binding?.buttonAdd?.visibility = View.GONE
-                binding?.buttonCancel?.visibility = View.GONE
+
             }
         }
 
         override fun afterTextChanged(s: Editable?) {}
+    }
+
+
+
+    override fun onDestroy() {
+        super.onDestroy()
+        binding = null
     }
 }

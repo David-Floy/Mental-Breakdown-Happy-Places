@@ -1,6 +1,6 @@
-package com.example.mental_breakdown_happy_places
-import androidx.room.Entity;
-import androidx.room.PrimaryKey;
+package com.example.mental_breakdown_happy_places.db
+import androidx.room.Entity
+import androidx.room.PrimaryKey
 
 @Entity(tableName = "places")
 data class Place(

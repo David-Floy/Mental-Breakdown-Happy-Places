@@ -1,4 +1,4 @@
-package com.example.mental_breakdown_happy_places
+package com.example.mental_breakdown_happy_places.db
 
 import androidx.room.Dao
 import androidx.room.Delete

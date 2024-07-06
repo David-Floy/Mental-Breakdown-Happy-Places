@@ -59,8 +59,10 @@ dependencies {
     annotationProcessor(libs.androidx.room.compiler)
 
     ksp(libs.androidx.room.compiler)
-    // To use Kotlin Symbol Processing (KSP)
+
     ksp(libs.androidx.room.compiler)
+
+
     implementation("androidx.core:core-ktx:1.13.1")
     kapt("androidx.room:room-compiler:2.6.1")
     // optional - Kotlin Extensions and Coroutines support for Room

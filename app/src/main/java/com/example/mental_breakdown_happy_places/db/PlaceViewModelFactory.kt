@@ -1,4 +1,4 @@
-package com.example.mental_breakdown_happy_places
+package com.example.mental_breakdown_happy_places.db
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
