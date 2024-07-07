@@ -12,6 +12,7 @@ import com.example.mental_breakdown_happy_places.db.PlaceViewModelFactory
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
+import android.content.Intent
 
 class PlaceDetailActivity : AppCompatActivity() {
 
@@ -55,7 +56,12 @@ class PlaceDetailActivity : AppCompatActivity() {
 
         }
 
-
+        // Button Click Listener
+        binding?.button?.setOnClickListener {
+            val intent = Intent(this, PlaceList::class.java)
+            startActivity(intent)
+            finish()
+        }
 
     }
 
