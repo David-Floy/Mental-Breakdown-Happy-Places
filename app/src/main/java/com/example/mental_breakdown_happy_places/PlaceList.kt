@@ -9,12 +9,17 @@ import androidx.recyclerview.widget.RecyclerView
 import com.example.mental_breakdown_happy_places.db.PlaceApplication
 import com.example.mental_breakdown_happy_places.db.PlaceViewModel
 import com.example.mental_breakdown_happy_places.db.PlaceViewModelFactory
+import com.example.mental_breakdown_happy_places.databinding.ActivityPlaceListBinding
+import android.widget.Button
+import android.content.Intent
+
 
 
 class PlaceList : AppCompatActivity() {
 
     private lateinit var newRecyclerView: RecyclerView
     private lateinit var placeAdapter: PlaceListRecyclerViewAdapter
+    // private lateinit var binding: ActivityPlaceListBinding --- hab jetzt mal doch kein binding benutzt hier ---
 
     private val placeViewModel : PlaceViewModel by viewModels {
     PlaceViewModelFactory((application as PlaceApplication).repository)
@@ -41,6 +46,14 @@ class PlaceList : AppCompatActivity() {
             placeList?.let { placeAdapter.setPlaces(it) }
         })
 
+        // Button Click Listener to navigate to MainActivity
+        val backToMainButton: Button = findViewById(R.id.backToMainButton)
+        backToMainButton.setOnClickListener {
+            val intent = Intent(this, MainActivity::class.java)
+            startActivity(intent)
+            finish()
+        }
+        
     }
 
 
