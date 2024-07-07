@@ -6,7 +6,6 @@ import androidx.room.Delete
 import androidx.room.Insert
 import androidx.room.OnConflictStrategy
 import androidx.room.Query
-import kotlinx.coroutines.flow.Flow
 
 @Dao
 interface PlaceDao {
@@ -20,8 +19,8 @@ interface PlaceDao {
     fun delete(place: Place)
 
 
-    @Query("SELECT name FROM places WHERE id = :id")
-    fun getTextById(id: Int): String
+    @Query("SELECT * FROM places WHERE id = :id")
+    fun getPlaceById(id: Int): Place
 
     @Query("SELECT COUNT(*) FROM places")
     fun getCount() : Int

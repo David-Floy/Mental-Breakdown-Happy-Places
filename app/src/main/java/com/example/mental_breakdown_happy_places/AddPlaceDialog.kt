@@ -75,7 +75,7 @@ class AddPlaceDialog : AppCompatActivity() {
         }
     }
 
-    // TextWatcher is for checking if an fextfield got edited
+    // TextWatcher is for checking if an textfield got edited
     private val textWatcher = object : TextWatcher {
         override fun beforeTextChanged(s: CharSequence?, start: Int, count: Int, after: Int) {}
 

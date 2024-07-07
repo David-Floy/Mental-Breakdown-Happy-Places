@@ -1,7 +1,6 @@
 package com.example.mental_breakdown_happy_places.db
 
 import androidx.lifecycle.LiveData
-import kotlinx.coroutines.flow.Flow
 
 class PlaceRepository (private val placeDao: PlaceDao) {
 
@@ -19,7 +18,7 @@ class PlaceRepository (private val placeDao: PlaceDao) {
     fun getPlacesLiveData(): LiveData<List<Place>> {
         return placeDao.getAllPlaces()
     }
-    fun getTextById(id: Int): String {
-        return placeDao.getTextById(id)
+    fun getPlaceDataById(id: Int): Place {
+        return placeDao.getPlaceById(id)
     }
 }
