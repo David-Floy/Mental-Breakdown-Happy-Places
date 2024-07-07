@@ -6,24 +6,58 @@
     android:layout_height="match_parent"
     android:fitsSystemWindows="true"
     tools:context=".MainActivity" >
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:background="@color/lightBlue"
+        android:orientation="vertical">
 
-    <Button
-        android:id="@+id/testadd"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="160dp"
-        android:layout_marginTop="340dp"
-        android:text="Add new Place"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
+        <TextView
+            android:id="@+id/appTitle"
+            android:layout_width="match_parent"
+            android:layout_height="70dp"
+            android:text="Happy Places"
+            android:textSize="25sp"
+            android:textStyle="bold"
+            android:layout_marginBottom="30dp"
+            android:gravity="center"
+            android:textColor="@color/white"
+            android:background="@color/black"
+            />
+        <TextView
+            android:id="@+id/appDescription"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Store all your favourite places here so you always have access to them!"
+            android:textSize="20sp"
+            android:layout_marginLeft="20dp"
+            android:layout_marginRight="20dp"
+            android:gravity="center"
+            android:textColor="@color/black"
+            android:layout_marginTop="50dp"/>
 
-    <Button
-        android:id="@+id/showDB"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="160dp"
-        android:layout_marginTop="64dp"
-        android:text="Place List"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/testadd" />
+        <Button
+            android:id="@+id/testadd"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:layout_marginTop="160dp"
+            android:backgroundTint="@color/black"
+            android:text="Add new Place"
+            android:textColor="@color/white"
+            android:textSize="20sp"
+            app:cornerRadius="0dp" />
+
+        <Button
+            android:id="@+id/showDB"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:layout_marginTop="64dp"
+            android:backgroundTint="@color/black"
+            android:text="List of your places"
+            android:textColor="@color/white"
+            android:textSize="20sp"
+            app:cornerRadius="0dp" />
+    </LinearLayout>
 </androidx.constraintlayout.widget.ConstraintLayout>
