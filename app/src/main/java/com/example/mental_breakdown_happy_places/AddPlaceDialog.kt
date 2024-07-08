@@ -31,6 +31,7 @@ import org.osmdroid.views.overlay.mylocation.MyLocationNewOverlay
 class AddPlaceDialog : AppCompatActivity() {
     private var binding: ActivityAddPlaceBinding? = null
 
+    // Location permission request code
     private val LOCATION_PERMISSION_REQUEST_CODE = 1
 
     val placeViewModel : PlaceViewModel by viewModels{
@@ -45,8 +46,11 @@ class AddPlaceDialog : AppCompatActivity() {
     var longitude :Double = 0.0
     var geoPoint : GeoPoint? = null
     var map : MapView? = null
+
     lateinit var marker : Marker
 
+    // Default location for Marker in case GPS is not available
+    val defaultMarkerLocation = GeoPoint(52.5200, 13.4050)
 
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -54,14 +58,16 @@ class AddPlaceDialog : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         binding = ActivityAddPlaceBinding.inflate(layoutInflater)
         setContentView(binding?.root)
+
+        // MapView settings
         Configuration.getInstance().load(this, PreferenceManager.getDefaultSharedPreferences(this))
+
         // Initial visibility of buttons
         binding?.buttonAdd?.visibility = View.GONE
 
 
         // MapView settings
         map = binding?.addPlaceMapView
-
         map?.setUseDataConnection(true)
         map?.setTileSource(TileSourceFactory.MAPNIK)
         map?.setMultiTouchControls(true)
@@ -75,12 +81,14 @@ class AddPlaceDialog : AppCompatActivity() {
             ActivityCompat.requestPermissions(this, arrayOf(Manifest.permission.ACCESS_FINE_LOCATION), LOCATION_PERMISSION_REQUEST_CODE)
         } else {
             // Permission already granted, proceed with location setup
+            // Get the map again
             val mGpsMyLocationProvider = GpsMyLocationProvider(this)
             val mLocationProvider = MyLocationNewOverlay(mGpsMyLocationProvider, map)
             mLocationProvider.enableMyLocation()
             mLocationProvider.enableFollowLocation()
             map?.overlays?.add(mLocationProvider)
 
+            // Run on first fix
             mLocationProvider.runOnFirstFix {
                 runOnUiThread {
                     map?.overlays?.clear()
@@ -90,8 +98,11 @@ class AddPlaceDialog : AppCompatActivity() {
                     geoPoint = mLocationProvider.myLocation
                     addMarker(geoPoint)
 
+                    // Set the initial values of the EditTexts
                     binding?.editPlaceLatitude?.setText(geoPoint?.latitude.toString())
                     binding?.editPlaceLongitude?.setText(geoPoint?.longitude.toString())
+
+                    // Set the initial zoom level
                     mapController.setZoom(18) // Or your desired zoom level
                     mLocationProvider.disableMyLocation()
                 }
@@ -146,14 +157,17 @@ class AddPlaceDialog : AppCompatActivity() {
             if (name.isNotEmpty() ) {
                 binding?.buttonAdd?.visibility = View.VISIBLE
 
-            } else if (longitude.isNotEmpty()) {
+            } else if (longitude.isNotEmpty()&& latitude.isNotEmpty()) {
                 marker.position.longitude = longitude.toDouble()
                 map?.controller?.animateTo(marker.position)
-            }
-            else if (latitude.isNotEmpty()) {
+
                 marker.position.latitude = latitude.toDouble()
                 map?.controller?.animateTo(marker.position)
             }
+            /*else if (latitude.isNotEmpty()) {
+                marker.position.latitude = latitude.toDouble()
+                map?.controller?.animateTo(marker.position)
+            }*/
             else if (name.isEmpty()) {
                 binding?.buttonAdd?.visibility = View.GONE
 
@@ -183,6 +197,9 @@ class AddPlaceDialog : AppCompatActivity() {
                     }
                 }
             } else {
+                val map = binding?.addPlaceMapView // Get the map again
+                map?.overlays?.clear()
+                addMarker(defaultMarkerLocation)
                 // Permission denied, handle accordingly (e.g., show a message)
                 // You might want to inform the user that location features won't be available
             }

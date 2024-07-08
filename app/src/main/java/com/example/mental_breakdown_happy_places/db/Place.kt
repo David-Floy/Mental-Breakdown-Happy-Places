@@ -3,6 +3,8 @@ import androidx.room.Entity
 import androidx.room.PrimaryKey
 import org.osmdroid.util.GeoPoint
 
+
+// Entity class for the places table
 @Entity(tableName = "places")
 data class Place(
     @PrimaryKey(autoGenerate = true) var id: Int = 0,
