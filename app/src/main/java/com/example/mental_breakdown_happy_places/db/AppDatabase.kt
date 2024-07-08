@@ -4,8 +4,11 @@ import android.content.Context
 import androidx.room.Database
 import androidx.room.Room
 import androidx.room.RoomDatabase
+import androidx.room.TypeConverters
+import com.example.mental_breakdown_happy_places.GeoPointConverter
 
 @Database(entities = [Place::class], version = 1)
+@TypeConverters(GeoPointConverter::class)
 abstract class AppDatabase : RoomDatabase() {
     abstract fun placeDao(): PlaceDao
 

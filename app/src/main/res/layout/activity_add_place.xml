@@ -33,6 +33,12 @@
         android:hint="Longitude"
         android:inputType="numberDecimal" />
 
+    <org.osmdroid.views.MapView
+        android:id="@+id/addPlaceMapView"
+        android:layout_width="match_parent"
+        android:layout_height="379dp"
+        android:layout_marginBottom="15dp"/>
+
     <Button
         android:id="@+id/buttonAdd"
         android:layout_width="match_parent"
@@ -50,4 +56,6 @@
         android:text="Cancel"
         android:textColor="@color/white"
         app:cornerRadius="0dp" />
+
+
 </LinearLayout>
