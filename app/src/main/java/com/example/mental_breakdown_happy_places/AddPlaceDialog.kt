@@ -45,6 +45,8 @@ class AddPlaceDialog : AppCompatActivity() {
     var longitude :Double = 0.0
     var geoPoint : GeoPoint? = null
     var map : MapView? = null
+    lateinit var marker : Marker
+
 
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -59,6 +61,7 @@ class AddPlaceDialog : AppCompatActivity() {
 
         // MapView settings
         map = binding?.addPlaceMapView
+
         map?.setUseDataConnection(true)
         map?.setTileSource(TileSourceFactory.MAPNIK)
         map?.setMultiTouchControls(true)
@@ -87,24 +90,27 @@ class AddPlaceDialog : AppCompatActivity() {
                     geoPoint = mLocationProvider.myLocation
                     addMarker(geoPoint)
 
+                    binding?.editPlaceLatitude?.setText(geoPoint?.latitude.toString())
+                    binding?.editPlaceLongitude?.setText(geoPoint?.longitude.toString())
                     mapController.setZoom(18) // Or your desired zoom level
                     mLocationProvider.disableMyLocation()
                 }
+
             }
+
         }
+
 
 
         // TextWatchers for EditTexts
         binding?.editPlaceName?.addTextChangedListener(textWatcher)
-        binding?.editPlaceDescription?.addTextChangedListener(textWatcher)
-        binding?.editPlaceLatitude?.addTextChangedListener(textWatcher)
         binding?.editPlaceLongitude?.addTextChangedListener(textWatcher)
+        binding?.editPlaceLatitude?.addTextChangedListener(textWatcher)
 
 
         binding?.buttonCancel?.setOnClickListener {
             finish()
         }
-
 
         // Inputs
         binding?.buttonAdd?.setOnClickListener {
@@ -122,7 +128,7 @@ class AddPlaceDialog : AppCompatActivity() {
 
             // Adds new place to DB. Id should be assigned automatically.
             lifecycleScope.launch {
-                placeViewModel.insertPlace(0,name,description,latitude,longitude, geoPoint!!)
+                placeViewModel.insertPlace(0,name,description,latitude,longitude, marker.position!!)
             }
             finish()
         }
@@ -134,14 +140,21 @@ class AddPlaceDialog : AppCompatActivity() {
 
         override fun onTextChanged(s: CharSequence?, start: Int, before: Int, count: Int) {
             val name = binding?.editPlaceName?.text.toString()
-            val description = binding?.editPlaceDescription?.text.toString()
             val latitude = binding?.editPlaceLatitude?.text.toString()
             val longitude = binding?.editPlaceLongitude?.text.toString()
 
-            if (name.isNotEmpty() || description.isNotEmpty() || latitude.isNotEmpty() || longitude.isNotEmpty()) {
+            if (name.isNotEmpty() ) {
                 binding?.buttonAdd?.visibility = View.VISIBLE
 
-            } else {
+            } else if (longitude.isNotEmpty()) {
+                marker.position.longitude = longitude.toDouble()
+                map?.controller?.animateTo(marker.position)
+            }
+            else if (latitude.isNotEmpty()) {
+                marker.position.latitude = latitude.toDouble()
+                map?.controller?.animateTo(marker.position)
+            }
+            else if (name.isEmpty()) {
                 binding?.buttonAdd?.visibility = View.GONE
 
             }
@@ -174,17 +187,20 @@ class AddPlaceDialog : AppCompatActivity() {
                 // You might want to inform the user that location features won't be available
             }
         }
+
+
     }
+
      fun addMarker(center: GeoPoint?) {
-        val marker: Marker = Marker(map)
+        marker = Marker(map)
         marker.setPosition(center)
         marker.setAnchor(Marker.ANCHOR_CENTER, Marker.ANCHOR_BOTTOM)
         marker.setIcon(getResources().getDrawable(R.drawable.ic_menu_mylocation))
         map?.overlays?.clear()
         map?.overlays?.add(marker)
         map?.invalidate()
-
     }
+
 
     override fun onDestroy() {
         super.onDestroy()

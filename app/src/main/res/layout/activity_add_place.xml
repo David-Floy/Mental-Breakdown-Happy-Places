@@ -23,6 +23,7 @@
         android:id="@+id/edit_place_latitude"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:editable="true"
         android:hint="Latitude"
         android:inputType="numberDecimal" />
 
@@ -30,6 +31,7 @@
         android:id="@+id/edit_place_longitude"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:editable="true"
         android:hint="Longitude"
         android:inputType="numberDecimal" />
 
