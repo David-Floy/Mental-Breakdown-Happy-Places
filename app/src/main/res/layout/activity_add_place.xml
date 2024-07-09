@@ -23,6 +23,7 @@
         android:id="@+id/edit_place_latitude"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:editable="true"
         android:hint="Latitude"
         android:inputType="numberDecimal" />
 
@@ -30,8 +31,15 @@
         android:id="@+id/edit_place_longitude"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:editable="true"
         android:hint="Longitude"
         android:inputType="numberDecimal" />
+
+    <org.osmdroid.views.MapView
+        android:id="@+id/addPlaceMapView"
+        android:layout_width="match_parent"
+        android:layout_height="379dp"
+        android:layout_marginBottom="15dp"/>
 
     <Button
         android:id="@+id/buttonAdd"
@@ -50,4 +58,6 @@
         android:text="Cancel"
         android:textColor="@color/white"
         app:cornerRadius="0dp" />
+
+
 </LinearLayout>

@@ -4,10 +4,19 @@ import android.content.Context
 import androidx.room.Database
 import androidx.room.Room
 import androidx.room.RoomDatabase
+import androidx.room.TypeConverters
+import androidx.room.migration.Migration
+import androidx.sqlite.db.SupportSQLiteDatabase
+import com.example.mental_breakdown_happy_places.GeoPointConverter
 
-@Database(entities = [Place::class], version = 1)
+@Database(entities = [Place::class], version = 2)
+@TypeConverters(GeoPointConverter::class)
 abstract class AppDatabase : RoomDatabase() {
     abstract fun placeDao(): PlaceDao
+
+
+    // Migration definition (usually in the same file)
+
 
     companion object {
         @Volatile
@@ -24,5 +33,8 @@ abstract class AppDatabase : RoomDatabase() {
                 instance
             }
         }
+
     }
+
+
 }

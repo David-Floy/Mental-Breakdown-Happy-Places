@@ -13,6 +13,13 @@ import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
 import android.content.Intent
+import android.preference.PreferenceManager
+import org.osmdroid.api.IMapController
+import org.osmdroid.config.Configuration
+import org.osmdroid.tileprovider.tilesource.TileSourceFactory
+import org.osmdroid.util.GeoPoint
+import org.osmdroid.views.MapView
+import org.osmdroid.views.overlay.Marker
 
 class PlaceDetailActivity : AppCompatActivity() {
 
@@ -22,11 +29,32 @@ class PlaceDetailActivity : AppCompatActivity() {
 
     private  var binding: ActivityPlaceDetailBinding? = null
 
-    override fun onCreate(savedInstanceState: Bundle?) {
+    var map : MapView? = null
+    var nameForMarker : String? = null
 
+    private fun addMarker(geoPoint: GeoPoint?) {
+        if (geoPoint != null && map != null) {
+            val marker = Marker(map)
+            marker.position = geoPoint
+            marker.setAnchor(Marker.ANCHOR_CENTER, Marker.ANCHOR_BOTTOM)
+            marker.title = nameForMarker
+            map?.overlays?.add(marker)
+        }
+    }
+
+
+    override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         binding = ActivityPlaceDetailBinding.inflate(layoutInflater)
         setContentView(binding?.root)
+        Configuration.getInstance().load(this, PreferenceManager.getDefaultSharedPreferences(this))
+
+        // MapView settings
+        map = binding?.detailPlaceMapView
+        map?.setUseDataConnection(true)
+        map?.setTileSource(TileSourceFactory.MAPNIK)
+        map?.setMultiTouchControls(true)
+        val mapController : IMapController = map?.controller!!
 
 
         // Place object
@@ -45,9 +73,12 @@ class PlaceDetailActivity : AppCompatActivity() {
 
                     // To access th other attributes of the place, use the place object
                     // for example, binding?.ID_of_the_attribute from layout?.text = place.name
+                    nameForMarker = place.name
                     binding?.detailPlaceName?.text = place.name
                     binding?.detailPlaceDescription?.text = place.description
-
+                    mapController.animateTo(GeoPointConverter().toGeoPoint(place.geoPoint))
+                    addMarker(GeoPointConverter().toGeoPoint(place.geoPoint))
+                    map?.controller?.setZoom(18)
                 }
             }
 
