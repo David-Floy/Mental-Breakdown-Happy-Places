@@ -30,12 +30,14 @@ class PlaceDetailActivity : AppCompatActivity() {
     private  var binding: ActivityPlaceDetailBinding? = null
 
     var map : MapView? = null
+    var nameForMarker : String? = null
 
     private fun addMarker(geoPoint: GeoPoint?) {
         if (geoPoint != null && map != null) {
             val marker = Marker(map)
             marker.position = geoPoint
             marker.setAnchor(Marker.ANCHOR_CENTER, Marker.ANCHOR_BOTTOM)
+            marker.title = nameForMarker
             map?.overlays?.add(marker)
         }
     }
@@ -71,6 +73,7 @@ class PlaceDetailActivity : AppCompatActivity() {
 
                     // To access th other attributes of the place, use the place object
                     // for example, binding?.ID_of_the_attribute from layout?.text = place.name
+                    nameForMarker = place.name
                     binding?.detailPlaceName?.text = place.name
                     binding?.detailPlaceDescription?.text = place.description
                     mapController.animateTo(GeoPointConverter().toGeoPoint(place.geoPoint))

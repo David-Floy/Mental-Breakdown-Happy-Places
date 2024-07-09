@@ -3,6 +3,8 @@ package com.example.mental_breakdown_happy_places
 import androidx.room.TypeConverter
 import org.osmdroid.util.GeoPoint
 
+
+// Class to convert GeoPoint to and from String to save in DB
 class GeoPointConverter {
     @TypeConverter
     fun fromGeoPoint(geoPoint: GeoPoint?): String? {

@@ -50,7 +50,7 @@ class AddPlaceDialog : AppCompatActivity() {
     lateinit var marker : Marker
 
     // Default location for Marker in case GPS is not available
-    val defaultMarkerLocation = GeoPoint(52.5200, 13.4050)
+    private val defaultMarkerLocation = GeoPoint(52.5200, 13.4050)
 
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -123,6 +123,9 @@ class AddPlaceDialog : AppCompatActivity() {
             finish()
         }
 
+
+
+
         // Inputs
         binding?.buttonAdd?.setOnClickListener {
             // Name of the place
@@ -137,11 +140,19 @@ class AddPlaceDialog : AppCompatActivity() {
             longitude = binding?.editPlaceLongitude?.text.toString().toDoubleOrNull() ?: 0.0
 
 
-            // Adds new place to DB. Id should be assigned automatically.
-            lifecycleScope.launch {
-                placeViewModel.insertPlace(0,name,description,latitude,longitude, marker.position!!)
-            }
-            finish()
+                // Adds new place to DB. Id should be assigned automatically.
+                lifecycleScope.launch {
+                    placeViewModel.insertPlace(
+                        0,
+                        name,
+                        description,
+                        latitude,
+                        longitude,
+                        marker.position!!
+                    )
+                }
+                finish()
+
         }
     }
 
@@ -154,8 +165,9 @@ class AddPlaceDialog : AppCompatActivity() {
             val latitude = binding?.editPlaceLatitude?.text.toString()
             val longitude = binding?.editPlaceLongitude?.text.toString()
 
-            if (name.isNotEmpty() ) {
+            if (name.isNotEmpty() && ::marker.isInitialized) {
                 binding?.buttonAdd?.visibility = View.VISIBLE
+
 
             } else if (longitude.isNotEmpty()&& latitude.isNotEmpty()) {
                 marker.position.longitude = longitude.toDouble()
@@ -217,6 +229,7 @@ class AddPlaceDialog : AppCompatActivity() {
         map?.overlays?.add(marker)
         map?.invalidate()
     }
+
 
 
     override fun onDestroy() {
